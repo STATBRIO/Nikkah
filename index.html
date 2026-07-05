@@ -1273,15 +1273,37 @@
             </div>
             <div class="quran-arabic">بَارَكَ اللَّهُ لَكُمَا وَبَارَكَ عَلَيْكُمَا وَجَمَعَ بَيْنَكُمَا فِي خَيْرٍ</div>
             <p class="quran-translation">"May Allah bless you both, shower His blessings upon you, and unite you both in goodness."</p>
-            <svg class="rings-svg" viewBox="0 0 140 84" aria-hidden="true">
+            <svg class="rings-svg" viewBox="0 0 172 100" aria-hidden="true">
                 <defs>
-                    <linearGradient id="ringGold" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0" stop-color="#f3df9c"/><stop offset="0.5" stop-color="#D4AF37"/><stop offset="1" stop-color="#a87f1e"/>
+                    <linearGradient id="bandA" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0" stop-color="#f7e8ac"/><stop offset="0.45" stop-color="#D4AF37"/><stop offset="1" stop-color="#9c7414"/>
                     </linearGradient>
+                    <linearGradient id="bandB" x1="0" y1="1" x2="0" y2="0">
+                        <stop offset="0" stop-color="#f7e8ac"/><stop offset="0.5" stop-color="#c9a227"/><stop offset="1" stop-color="#8a6410"/>
+                    </linearGradient>
+                    <linearGradient id="gem" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0" stop-color="#ffffff"/><stop offset="0.5" stop-color="#e3f2f8"/><stop offset="1" stop-color="#a6d6e8"/>
+                    </linearGradient>
+                    <clipPath id="weaveTop"><circle cx="86" cy="41" r="12"/></clipPath>
                 </defs>
-                <circle cx="54" cy="46" r="30" fill="none" stroke="url(#ringGold)" stroke-width="5"/>
-                <circle cx="86" cy="46" r="30" fill="none" stroke="url(#ringGold)" stroke-width="5"/>
-                <path d="M70 8 l5 9 -10 0 z" fill="url(#ringGold)"/>
+                <!-- back wedding band -->
+                <circle cx="67" cy="60" r="29" fill="none" stroke="url(#bandA)" stroke-width="9"/>
+                <circle cx="67" cy="60" r="29" fill="none" stroke="#fff8e2" stroke-opacity="0.45" stroke-width="2.4"/>
+                <!-- front engagement ring -->
+                <circle cx="105" cy="60" r="29" fill="none" stroke="url(#bandB)" stroke-width="8.5"/>
+                <circle cx="105" cy="60" r="29" fill="none" stroke="#fff8e2" stroke-opacity="0.4" stroke-width="2.2"/>
+                <!-- weave: back band passes OVER the front at the top crossing -->
+                <g clip-path="url(#weaveTop)">
+                    <circle cx="67" cy="60" r="29" fill="none" stroke="url(#bandA)" stroke-width="9"/>
+                    <circle cx="67" cy="60" r="29" fill="none" stroke="#fff8e2" stroke-opacity="0.45" stroke-width="2.4"/>
+                </g>
+                <!-- diamond solitaire on the front ring -->
+                <g transform="translate(105,22)">
+                    <path d="M-10,0 L10,0 L0,15 Z" fill="url(#gem)" stroke="#b9dded" stroke-width="0.6"/>
+                    <path d="M-10,0 L-4,-8 L4,-8 L10,0 Z" fill="url(#gem)"/>
+                    <path d="M-4,-8 L0,0 L4,-8 M-10,0 L10,0 M0,0 L0,15 M-5,0 L-2.5,-8 M5,0 L2.5,-8" stroke="#ffffff" stroke-opacity="0.75" stroke-width="0.5" fill="none"/>
+                    <line x1="0" y1="15" x2="0" y2="20" stroke="url(#bandB)" stroke-width="2.4"/>
+                </g>
             </svg>
             <h2 class="ending-script">Zainudeen &amp; Safrin</h2>
             <p class="ending-note">With hearts full of love and gratitude,<br>we await your cherished presence.</p>
