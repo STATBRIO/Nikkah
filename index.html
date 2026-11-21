@@ -201,11 +201,35 @@
     .big-date i { font-style: normal; color: var(--rose); padding: 0 0.1em; }
     .weekday { margin-top: 8px; color: var(--ink); }
     .hijri { margin-top: 4px; font-size: 1.1rem; font-style: italic; color: var(--mute); }
-    .countdown { display: flex; justify-content: center; margin-top: 6px; }
-    .countdown div { flex: 1; max-width: 76px; padding: 4px 0; border-left: 1px solid var(--line-soft); }
-    .countdown div:first-child { border-left: 0; }
-    .countdown b { display: block; font-size: clamp(1.7rem, 7.5vw, 2.1rem); font-weight: 500; line-height: 1.1; font-variant-numeric: tabular-nums; }
-    .countdown .label { font-size: 0.56rem; letter-spacing: 0.24em; }
+    /* Countdown: four mini arches. A rose line travels round each arch as
+       its unit runs down, and the number rolls when it changes. */
+    .countdown { display: flex; justify-content: center; gap: clamp(6px, 2.2vw, 10px); margin-top: 8px; }
+    .cd {
+        position: relative;
+        width: clamp(56px, 16.5vw, 66px);
+        aspect-ratio: 60 / 80;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-end;
+        padding-bottom: 10px;
+    }
+    .cd svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+    .cd path { fill: none; stroke-linecap: round; }
+    .cd .cd-track { stroke: var(--line-soft); stroke-width: 1; fill: rgba(244, 239, 230, 0.03); }
+    .cd-prog {
+        stroke: var(--rose);
+        stroke-width: 1.6;
+        stroke-dasharray: 0 100;
+        filter: drop-shadow(0 0 3px rgba(194, 40, 58, 0.7));
+        transition: stroke-dasharray 0.7s cubic-bezier(0.3, 0.8, 0.3, 1);
+    }
+    .cd-clip { display: block; overflow: hidden; line-height: 1.15; }
+    .countdown b { display: block; font-size: clamp(1.35rem, 6vw, 1.7rem); font-weight: 400; line-height: 1.15; font-variant-numeric: tabular-nums; }
+    .countdown b.roll { animation: roll 0.5s cubic-bezier(0.2, 0.9, 0.3, 1); }
+    @keyframes roll { from { transform: translateY(70%); opacity: 0; } to { transform: none; opacity: 1; } }
+    .countdown .label { font-size: 0.5rem; letter-spacing: 0.2em; margin-top: 1px; }
+    .cd-done { font-size: clamp(2rem, 8.6vw, 2.5rem); padding: 14px 0 4px; }
     .text-btn {
         display: inline-block;
         margin-top: 20px;
@@ -290,7 +314,6 @@
     .person .town, .venue-town, .hijri { font-size: clamp(0.84rem, 3.4vw, 0.95rem); letter-spacing: 0.08em; }
     .invite-line { font-size: clamp(0.88rem, 3.6vw, 1rem); line-height: 1.55; }
     .big-date { font-size: clamp(2.2rem, 10.4vw, 3rem); letter-spacing: 0.06em; }
-    .countdown b { font-size: clamp(1.5rem, 6.6vw, 1.9rem); }
     .venue-name { font-size: clamp(1.2rem, 5.3vw, 1.6rem); letter-spacing: 0.03em; white-space: nowrap; }
     .programme li { font-size: clamp(0.95rem, 4vw, 1.1rem); }
     .ayah-en { font-size: clamp(0.86rem, 3.5vw, 0.98rem); line-height: 1.6; }
@@ -526,10 +549,10 @@
             <p class="hijri">23 Rajab 1448 AH</p>
             <svg class="rule" aria-hidden="true"><use href="#rule"/></svg>
             <div class="countdown" id="countdown" role="timer" aria-label="Time left until the Nikkah">
-                <div><b data-u="d">--</b><span class="label">Days</span></div>
-                <div><b data-u="h">--</b><span class="label">Hours</span></div>
-                <div><b data-u="m">--</b><span class="label">Mins</span></div>
-                <div><b data-u="s">--</b><span class="label">Secs</span></div>
+                <div class="cd"><svg viewBox="0 0 60 80" aria-hidden="true"><path class="cd-track" d="M1 79V30a29 29 0 0 1 58 0v49Z"/><path class="cd-prog" data-p="d" pathLength="100" d="M1 79V30a29 29 0 0 1 58 0v49"/></svg><span class="cd-clip"><b data-u="d">--</b></span><span class="label">Days</span></div>
+                <div class="cd"><svg viewBox="0 0 60 80" aria-hidden="true"><path class="cd-track" d="M1 79V30a29 29 0 0 1 58 0v49Z"/><path class="cd-prog" data-p="h" pathLength="100" d="M1 79V30a29 29 0 0 1 58 0v49"/></svg><span class="cd-clip"><b data-u="h">--</b></span><span class="label">Hours</span></div>
+                <div class="cd"><svg viewBox="0 0 60 80" aria-hidden="true"><path class="cd-track" d="M1 79V30a29 29 0 0 1 58 0v49Z"/><path class="cd-prog" data-p="m" pathLength="100" d="M1 79V30a29 29 0 0 1 58 0v49"/></svg><span class="cd-clip"><b data-u="m">--</b></span><span class="label">Mins</span></div>
+                <div class="cd"><svg viewBox="0 0 60 80" aria-hidden="true"><path class="cd-track" d="M1 79V30a29 29 0 0 1 58 0v49Z"/><path class="cd-prog" data-p="s" pathLength="100" d="M1 79V30a29 29 0 0 1 58 0v49"/></svg><span class="cd-clip"><b data-u="s">--</b></span><span class="label">Secs</span></div>
             </div>
             <button type="button" class="text-btn" id="calBtn">Add to calendar</button>
         </div>
@@ -734,15 +757,30 @@
     var target = Date.parse('2027-01-03T10:00:00+05:30');
     var cd = document.getElementById('countdown');
     function pad(n) { return n < 10 ? '0' + n : '' + n; }
-    function tick() {
-        var t = Math.max(0, Math.floor((target - Date.now()) / 1000));
-        cd.querySelector('[data-u="d"]').textContent = Math.floor(t / 86400);
-        cd.querySelector('[data-u="h"]').textContent = pad(Math.floor(t % 86400 / 3600));
-        cd.querySelector('[data-u="m"]').textContent = pad(Math.floor(t % 3600 / 60));
-        cd.querySelector('[data-u="s"]').textContent = pad(t % 60);
+    function put(u, text, frac) {
+        var b = cd.querySelector('[data-u="' + u + '"]');
+        if (b.textContent !== text) {
+            b.textContent = text;
+            if (!reduce) { b.classList.remove('roll'); void b.offsetWidth; b.classList.add('roll'); }
+        }
+        cd.querySelector('[data-p="' + u + '"]').style.strokeDasharray = (Math.max(0, Math.min(1, frac)) * 100).toFixed(1) + ' 100';
     }
+    var timer;
+    function tick() {
+        var t = Math.floor((target - Date.now()) / 1000);
+        if (t <= 0) {
+            clearInterval(timer);
+            cd.innerHTML = '<p class="script cd-done">Today is the day</p>';
+            return;
+        }
+        var d = Math.floor(t / 86400), h = Math.floor(t % 86400 / 3600), m = Math.floor(t % 3600 / 60), sec = t % 60;
+        put('d', '' + d, d / 60);          /* line is full at 60+ days out */
+        put('h', pad(h), h / 24);
+        put('m', pad(m), m / 60);
+        put('s', pad(sec), sec / 60);
+    }
+    timer = setInterval(tick, 1000);
     tick();
-    setInterval(tick, 1000);
 
     /* Add to calendar (.ics download, made on the device) */
     document.getElementById('calBtn').addEventListener('click', function () {
