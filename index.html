@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0b0b0c">
+<title>Nikkah Ceremony · Uwaise &amp; Hajira</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Allura&family=Amiri&family=Jost:wght@300;400;500&family=Marcellus&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --bg: #0b0b0c;
+        --card-top: #17171a;
+        --card-bot: #0e0e10;
+        --ink: #f4efe6;
+        --mute: #b9b2a6;
+        --line: rgba(244, 239, 230, 0.30);
+        --line-soft: rgba(244, 239, 230, 0.12);
+        --rose: #c2283a;
+        --rose-deep: #7a0f1b;
+        --leaf: #6f8a72;
+        --script: 'Allura', cursive;
+        --serif: 'Marcellus', Georgia, serif;
+        --sans: 'Jost', system-ui, sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-snap-type: y proximity; scroll-behavior: smooth; background: var(--bg); }
+    html.locked { overflow: hidden; }
+
+    body {
+        font-family: var(--serif);
+        color: var(--ink);
+        background:
+            radial-gradient(120% 60% at 50% 0%, rgba(122, 15, 27, 0.20), transparent 60%),
+            radial-gradient(100% 50% at 50% 100%, rgba(122, 15, 27, 0.14), transparent 60%),
+            var(--bg);
+        background-attachment: fixed;
+        text-align: center;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+    }
+
+    /* ---------- shared pieces ---------- */
+    .sec {
+        min-height: 100vh;
+        min-height: 100svh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 26px 20px;
+        scroll-snap-align: start;
+    }
+
+    /* The arch card — the one shape the whole page is built on */
+    .arch {
+        position: relative;
+        width: min(100%, 400px);
+        padding: clamp(92px, 26vw, 112px) clamp(22px, 6vw, 36px) clamp(36px, 9vw, 46px);
+        border: 1px solid var(--line);
+        border-radius: 200px 200px 14px 14px;
+        background: linear-gradient(180deg, var(--card-top), var(--card-bot));
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.65);
+    }
+    .arch::before {
+        content: "";
+        position: absolute;
+        inset: 7px;
+        border: 1px solid var(--line-soft);
+        border-radius: 193px 193px 9px 9px;
+        pointer-events: none;
+    }
+    .arch-rose {
+        position: absolute;
+        top: clamp(30px, 9vw, 40px);
+        left: 50%;
+        width: 40px;
+        height: 40px;
+        margin-left: -20px;
+    }
+
+    .label {
+        font-family: var(--sans);
+        font-size: 0.68rem;
+        font-weight: 500;
+        letter-spacing: 0.32em;
+        text-transform: uppercase;
+        color: var(--mute);
+        line-height: 1.8;
+    }
+    .script { font-family: var(--script); font-weight: 400; line-height: 1; }
+    .rule { display: block; width: 190px; height: 16px; margin: 16px auto; color: var(--ink); opacity: 0.85; }
+    .soft { color: var(--mute); }
+
+    /* ---------- cover (tap to open) ---------- */
+    #cover {
+        position: fixed;
+        inset: 0;
+        z-index: 50;
+        perspective: 1400px;
+    }
+    .no-js #cover { display: none; }
+    .door {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 50.2%;
+        transition: transform 1.6s cubic-bezier(0.7, 0, 0.2, 1) 0.35s, opacity 0.5s ease 1.6s;
+    }
+    .door.l {
+        left: 0;
+        transform-origin: left center;
+        background: radial-gradient(180% 55% at 100% 100%, rgba(122, 15, 27, 0.38), transparent 70%), #08080a;
+    }
+    .door.r {
+        right: 0;
+        transform-origin: right center;
+        background: radial-gradient(180% 55% at 0% 100%, rgba(122, 15, 27, 0.38), transparent 70%), #08080a;
+    }
+    .cover-in {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        padding: 24px;
+        transition: opacity 0.5s ease, transform 0.6s ease;
+    }
+    #cover.gone { pointer-events: none; }
+    #cover.gone .cover-in { opacity: 0; transform: scale(0.9); }
+    #cover.gone .door.l { transform: rotateY(96deg); opacity: 0; }
+    #cover.gone .door.r { transform: rotateY(-96deg); opacity: 0; }
+
+    .logo { width: clamp(120px, 34vw, 150px); height: auto; }
+    .cover-names { font-size: clamp(2.6rem, 11vw, 3.6rem); margin-top: 4px; }
+    .cover-names em { font-family: var(--serif); font-style: italic; font-size: 0.6em; color: var(--rose); padding: 0 0.15em; }
+    .open-btn {
+        margin-top: 18px;
+        padding: 13px 30px;
+        font-family: var(--sans);
+        font-size: 0.72rem;
+        font-weight: 500;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        color: var(--ink);
+        background: transparent;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        cursor: pointer;
+        transition: background 0.3s, color 0.3s, border-color 0.3s;
+    }
+    .open-btn:hover, .open-btn:focus-visible { background: var(--ink); color: #0b0b0c; border-color: var(--ink); outline: none; }
+    .bouquet { width: min(92vw, 420px); height: auto; }
+    #cover .bouquet { position: absolute; bottom: -6px; left: 50%; transform: translateX(-50%); opacity: 0.95; }
+
+    /* ---------- 1 · hero ---------- */
+    .bismillah { font-family: 'Amiri', serif; font-size: clamp(1.25rem, 5vw, 1.55rem); direction: rtl; }
+    .bis-en { margin-top: 8px; font-size: 0.6rem; letter-spacing: 0.26em; }
+    .hero-title { font-size: clamp(3rem, 13.5vw, 4.2rem); margin: 14px 0 0; }
+    .hero-title span { display: block; }
+    .hero-title span + span { margin-top: -0.12em; padding-left: 0.5em; }
+    .hero-names { font-size: clamp(1.25rem, 5vw, 1.5rem); font-weight: 500; letter-spacing: 0.02em; }
+    .hero-names i { display: block; color: var(--rose); font-style: italic; line-height: 1; }
+    .hero-date { margin-top: 10px; }
+    .scroll-cue {
+        display: block;
+        width: 1px;
+        height: 26px;
+        margin: 14px auto 0;
+        background: linear-gradient(var(--ink), transparent);
+        animation: cue 2.2s ease-in-out infinite;
+        transform-origin: top;
+    }
+    @keyframes cue { 0%, 100% { transform: scaleY(0.35); opacity: 0.4; } 50% { transform: scaleY(1); opacity: 1; } }
+
+    /* ---------- 2 · couple ---------- */
+    .invite-line { font-size: clamp(1rem, 4vw, 1.12rem); font-style: italic; color: var(--mute); line-height: 1.45; margin-top: 8px; }
+    .person h2 {
+        font-size: clamp(1.85rem, 7.6vw, 2.4rem);
+        font-weight: 600;
+        line-height: 1.12;
+        letter-spacing: 0.01em;
+    }
+    .person .cred { margin-top: 5px; color: var(--rose); letter-spacing: 0.34em; }
+    .person .parents { margin-top: 9px; font-size: clamp(0.98rem, 3.9vw, 1.1rem); line-height: 1.35; }
+    .person .parents span { white-space: nowrap; }
+    .person .town { margin-top: 2px; font-style: italic; color: var(--mute); font-size: clamp(0.95rem, 3.7vw, 1.05rem); }
+
+    /* ---------- 3 · date ---------- */
+    .big-date {
+        font-size: clamp(2.5rem, 11.5vw, 3.3rem);
+        font-weight: 500;
+        letter-spacing: 0.04em;
+        line-height: 1.1;
+        margin-top: 12px;
+    }
+    .big-date i { font-style: normal; color: var(--rose); padding: 0 0.1em; }
+    .weekday { margin-top: 8px; color: var(--ink); }
+    .hijri { margin-top: 4px; font-size: 1.1rem; font-style: italic; color: var(--mute); }
+    .countdown { display: flex; justify-content: center; margin-top: 6px; }
+    .countdown div { flex: 1; max-width: 76px; padding: 4px 0; border-left: 1px solid var(--line-soft); }
+    .countdown div:first-child { border-left: 0; }
+    .countdown b { display: block; font-size: clamp(1.7rem, 7.5vw, 2.1rem); font-weight: 500; line-height: 1.1; font-variant-numeric: tabular-nums; }
+    .countdown .label { font-size: 0.56rem; letter-spacing: 0.24em; }
+    .text-btn {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 11px 24px;
+        font-family: var(--sans);
+        font-size: 0.66rem;
+        font-weight: 500;
+        letter-spacing: 0.26em;
+        text-transform: uppercase;
+        text-decoration: none;
+        color: var(--ink);
+        background: transparent;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        cursor: pointer;
+        transition: background 0.3s, color 0.3s;
+    }
+    .text-btn:hover, .text-btn:focus-visible { background: var(--ink); color: #0b0b0c; outline: none; }
+
+    /* ---------- 4 · venue ---------- */
+    .venue-word { font-size: clamp(2.4rem, 10vw, 3rem); margin-top: 4px; }
+    .venue-name { font-size: clamp(1.55rem, 6.4vw, 1.95rem); font-weight: 600; line-height: 1.15; margin-top: 10px; }
+    .venue-town { font-size: 1.15rem; font-style: italic; color: var(--mute); margin-top: 2px; }
+    .programme { list-style: none; margin: 4px auto 0; max-width: 270px; }
+    .programme li { display: flex; align-items: baseline; gap: 10px; padding: 9px 0; font-size: clamp(1.08rem, 4.4vw, 1.22rem); }
+    .programme li + li { border-top: 1px solid var(--line-soft); }
+    .programme li::after { content: ""; order: 2; flex: 1; border-bottom: 1px dotted var(--line); transform: translateY(-4px); }
+    .programme span { order: 1; }
+    .programme time { order: 3; font-family: var(--sans); font-size: 0.74rem; letter-spacing: 0.16em; color: var(--mute); white-space: nowrap; }
+    .valima { font-size: clamp(1.7rem, 7vw, 2rem); margin-top: 18px; color: var(--ink); }
+
+    /* ---------- 5 · verse & close ---------- */
+    .ayah { font-family: 'Amiri', serif; font-size: clamp(1.3rem, 5.4vw, 1.6rem); line-height: 1.95; direction: rtl; margin-top: 4px; }
+    .ayah-en { margin-top: 12px; font-size: clamp(0.98rem, 3.9vw, 1.1rem); font-style: italic; line-height: 1.45; color: var(--mute); }
+    .ayah-ref { margin-top: 10px; }
+    .closing { font-size: clamp(1.05rem, 4.2vw, 1.18rem); line-height: 1.45; }
+    .thanks { font-size: clamp(1.75rem, 7.6vw, 2.3rem); margin-top: 14px; white-space: nowrap; }
+    .sec-end { flex-direction: column; gap: 6px; padding-bottom: 0; }
+    .sec-end .bouquet { margin-bottom: -6px; }
+
+    /* ---------- music toggle ---------- */
+    #music {
+        position: fixed;
+        right: 16px;
+        bottom: calc(16px + env(safe-area-inset-bottom));
+        z-index: 40;
+        width: 42px;
+        height: 42px;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        gap: 3px;
+        background: rgba(11, 11, 12, 0.8);
+        border: 1px solid var(--line);
+        border-radius: 50%;
+        cursor: pointer;
+    }
+    .js #music.show { display: flex; }
+    #music i { width: 2px; height: 14px; background: var(--ink); border-radius: 2px; transform: scaleY(0.3); }
+    #music.on i { animation: eq 0.9s ease-in-out infinite; }
+    #music.on i:nth-child(2) { animation-delay: 0.2s; }
+    #music.on i:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes eq { 0%, 100% { transform: scaleY(0.3); } 50% { transform: scaleY(1); } }
+
+    /* ---------- clean type system ----------
+       Marcellus (one weight, upright) for names and facts, Jost Light for
+       supporting lines, Allura for the script. No italics, no faux bold. */
+    h1, h2, b, .big-date, .person h2, .venue-name, .hero-names, .countdown b { font-weight: 400; }
+    .invite-line, .person .town, .hijri, .venue-town, .ayah-en, .closing, .person .parents {
+        font-family: var(--sans);
+        font-style: normal;
+        font-weight: 300;
+        letter-spacing: 0.02em;
+    }
+    .hero-names i, .cover-names em { font-style: normal; }
+    .cover-names em { font-family: var(--serif); font-size: 0.45em; vertical-align: 0.25em; }
+    .hero-names { font-size: clamp(1.15rem, 4.8vw, 1.4rem); letter-spacing: 0.04em; }
+    .hero-names i { font-size: 0.8em; line-height: 1.5; }
+    .hero-title { font-size: clamp(3.2rem, 14.5vw, 4.4rem); }
+    .person h2 { font-size: clamp(1.6rem, 6.9vw, 2.15rem); letter-spacing: 0.03em; }
+    .person .parents { font-size: clamp(0.86rem, 3.5vw, 0.98rem); line-height: 1.5; color: var(--ink); }
+    .person .town, .venue-town, .hijri { font-size: clamp(0.84rem, 3.4vw, 0.95rem); letter-spacing: 0.08em; }
+    .invite-line { font-size: clamp(0.88rem, 3.6vw, 1rem); line-height: 1.55; }
+    .big-date { font-size: clamp(2.2rem, 10.4vw, 3rem); letter-spacing: 0.06em; }
+    .countdown b { font-size: clamp(1.5rem, 6.6vw, 1.9rem); }
+    .venue-name { font-size: clamp(1.2rem, 5.3vw, 1.6rem); letter-spacing: 0.03em; white-space: nowrap; }
+    .programme li { font-size: clamp(0.95rem, 4vw, 1.1rem); }
+    .ayah-en { font-size: clamp(0.86rem, 3.5vw, 0.98rem); line-height: 1.6; }
+    .closing { font-size: clamp(0.92rem, 3.8vw, 1.05rem); line-height: 1.6; }
+    .thanks { font-size: clamp(2rem, 8.6vw, 2.6rem); }
+    .venue-word { font-size: clamp(2.6rem, 11vw, 3.2rem); }
+    .valima { font-size: clamp(1.8rem, 7.6vw, 2.2rem); }
+
+    /* ---------- page deck: one swipe / scroll = one page ----------
+       JS adds .deck when every card fits the screen. Pages are stacked and
+       glide past each other; otherwise the page falls back to normal scrolling. */
+    html.deck, html.deck body { height: 100%; overflow: hidden; overscroll-behavior: none; }
+    .deck main { position: fixed; inset: 0; overflow: hidden; perspective: 1200px; touch-action: none; }
+    .deck .sec {
+        position: absolute;
+        inset: 0;
+        min-height: 0;
+        transition: transform 1.15s cubic-bezier(0.22, 0.9, 0.24, 1), opacity 0.9s ease;
+        will-change: transform, opacity;
+        backface-visibility: hidden;
+    }
+    .deck .sec { padding: 14px 20px; }
+    .deck .arch { transform: scale(var(--fit, 1)); z-index: 1; }
+    .deck .sec-end { padding-bottom: 14px; }
+    .deck .sec-end > .bouquet { position: absolute; left: 0; right: 0; bottom: -8px; margin: 0 auto; z-index: 0; }
+    .deck .sec.is-next { transform: translate3d(0, 62%, 0) scale(0.88) rotateX(-14deg); opacity: 0; pointer-events: none; }
+    .deck .sec.is-prev { transform: translate3d(0, -62%, 0) scale(0.88) rotateX(14deg); opacity: 0; pointer-events: none; }
+
+    /* ---------- content reveal on arrival ---------- */
+    .js .arch > * {
+        opacity: 0;
+        transform: translate3d(0, 16px, 0);
+        transition: opacity 0.8s ease, transform 0.9s cubic-bezier(0.22, 0.9, 0.24, 1);
+    }
+    .js .in .arch > * { opacity: 1; transform: none; }
+
+    .js .arch > .arch-rose {
+        transform: scale(0) rotate(-220deg);
+        transition: transform 1.2s cubic-bezier(0.3, 1.4, 0.5, 1) 0.2s, opacity 0.4s ease 0.2s;
+    }
+    .js .arch > .rule { transform: scaleX(0); }
+    .js .arch > .script {
+        transform: none;
+        clip-path: inset(-30% 100% -30% -10%);
+        transition: clip-path 1.6s cubic-bezier(0.5, 0, 0.2, 1), opacity 0.3s ease;
+    }
+    .js .in .arch > .script { clip-path: inset(-30% -10% -30% -10%); }
+    .js .in .arch > .arch-rose, .js .in .arch > .rule { transform: none; }
+
+    .js .in .arch > *:nth-child(2) { transition-delay: 0.35s; }
+    .js .in .arch > *:nth-child(3) { transition-delay: 0.45s; }
+    .js .in .arch > *:nth-child(4) { transition-delay: 0.55s; }
+    .js .in .arch > *:nth-child(5) { transition-delay: 0.65s; }
+    .js .in .arch > *:nth-child(6) { transition-delay: 0.75s; }
+    .js .in .arch > *:nth-child(7) { transition-delay: 0.85s; }
+    .js .in .arch > *:nth-child(8) { transition-delay: 0.95s; }
+    .js .in .arch > *:nth-child(n+9) { transition-delay: 1.05s; }
+
+    /* End bouquet grows up from the ground */
+    .js .sec-end > .bouquet { transform: translateY(40%) scale(0.8); opacity: 0; transform-origin: bottom; transition: transform 1.4s cubic-bezier(0.3, 1.3, 0.5, 1) 0.6s, opacity 0.8s ease 0.6s; }
+    .js .sec-end.in > .bouquet { transform: none; opacity: 1; }
+
+    /* ---------- petals: a fresh set for every page ---------- */
+    #petals { position: fixed; inset: 0; z-index: 30; overflow: hidden; pointer-events: none; }
+    .layer { position: absolute; inset: 0; transition: opacity 0.9s ease; }
+    .layer.out { opacity: 0; }
+    .petal { position: absolute; animation: fall linear infinite; will-change: transform; }
+    .petal i {
+        display: block;
+        width: 100%;
+        height: 100%;
+        border-radius: 80% 0 80% 0;
+        opacity: 0.88;
+        animation: sway ease-in-out infinite alternate;
+    }
+    .petal.round i { border-radius: 50% 50% 50% 10%; }
+    @keyframes fall {
+        from { transform: translate3d(0, 0, 0); }
+        to   { transform: translate3d(var(--dx, 0px), var(--dy), 0); }
+    }
+    @keyframes sway {
+        from { transform: translateX(-20px) rotate(-40deg) rotateY(0deg); }
+        to   { transform: translateX(20px) rotate(170deg) rotateY(180deg); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto; }
+        .deck .sec { transition: opacity 0.6s ease; }
+        .deck .sec.is-next, .deck .sec.is-prev { transform: none; }
+        .js .arch > *, .js .arch > .arch-rose, .js .arch > .rule, .js .arch > .script,
+        .js .sec-end > .bouquet { transform: none; clip-path: none; }
+        .scroll-cue, #music.on i { animation: none; }
+        #petals { display: none; }
+        .door { transition: opacity 0.6s ease; }
+        #cover.gone .door.l, #cover.gone .door.r { transform: none; }
+    }
+</style>
+<script>document.documentElement.className = 'js locked';</script>
+</head>
+<body>
+
+<!-- Shared SVG art: rose, divider rule -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+        <g id="rose">
+            <g fill="#6d0c17" stroke="#3a050b" stroke-width="0.8">
+                <circle cx="0" cy="-18" r="22"/><circle cx="17.1" cy="-5.6" r="22"/><circle cx="10.6" cy="14.6" r="22"/>
+                <circle cx="-10.6" cy="14.6" r="22"/><circle cx="-17.1" cy="-5.6" r="22"/>
+            </g>
+            <g fill="#8f1422" stroke="#4a0810" stroke-width="0.8">
+                <circle cx="5.9" cy="-8.1" r="16"/><circle cx="9.5" cy="3.1" r="16"/><circle cx="0" cy="10" r="16"/>
+                <circle cx="-9.5" cy="3.1" r="16"/><circle cx="-5.9" cy="-8.1" r="16"/>
+            </g>
+            <g fill="#b3202f" stroke="#5c0a12" stroke-width="0.8">
+                <circle cx="0" cy="-4" r="9"/><circle cx="3.5" cy="2" r="9"/><circle cx="-3.5" cy="2" r="9"/>
+            </g>
+            <path d="M-3 0a3 3 0 1 1 3 3a5.5 5.5 0 0 1-6-5.5" fill="none" stroke="#4a0810" stroke-width="1.1" stroke-linecap="round"/>
+        </g>
+        <path id="leaf" d="M0 0C10-13 30-13 42 0C30 13 10 13 0 0Z"/>
+        <symbol id="rule" viewBox="0 0 190 16">
+            <g fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round">
+                <path d="M4 8H78M112 8H186"/>
+                <path d="M58 8l-5-3M58 8l-5 3M68 8l-5-3M68 8l-5 3M132 8l5-3M132 8l5 3M122 8l5-3M122 8l5 3"/>
+            </g>
+            <g fill="currentColor">
+                <circle cx="95" cy="8" r="1.6"/>
+                <ellipse cx="95" cy="3" rx="1.5" ry="2.6"/><ellipse cx="95" cy="13" rx="1.5" ry="2.6"/>
+                <ellipse cx="90" cy="8" rx="2.6" ry="1.5"/><ellipse cx="100" cy="8" rx="2.6" ry="1.5"/>
+                <circle cx="91.4" cy="4.4" r="1.2"/><circle cx="98.6" cy="4.4" r="1.2"/>
+                <circle cx="91.4" cy="11.6" r="1.2"/><circle cx="98.6" cy="11.6" r="1.2"/>
+            </g>
+        </symbol>
+        <symbol id="bouquet" viewBox="0 0 420 150">
+            <g fill="#4f6a53">
+                <use href="#leaf" transform="translate(120 118) rotate(-150) scale(1.5)"/>
+                <use href="#leaf" transform="translate(300 118) rotate(-30) scale(1.5)"/>
+                <use href="#leaf" transform="translate(170 80) rotate(-115) scale(1.2)"/>
+                <use href="#leaf" transform="translate(250 80) rotate(-65) scale(1.2)"/>
+            </g>
+            <g fill="#6f8a72">
+                <use href="#leaf" transform="translate(95 135) rotate(-172) scale(1.3)"/>
+                <use href="#leaf" transform="translate(325 135) rotate(-8) scale(1.3)"/>
+            </g>
+            <g stroke="#8a9a86" stroke-width="0.8" fill="none">
+                <path d="M150 120C120 90 95 80 62 74M150 120C125 105 90 108 50 112M270 120C300 90 325 80 358 74M270 120C295 105 330 108 370 112M210 90C205 60 190 40 176 28M210 90C215 60 230 40 244 28"/>
+            </g>
+            <g fill="#f4efe6">
+                <circle cx="62" cy="74" r="3"/><circle cx="74" cy="68" r="2.2"/><circle cx="52" cy="84" r="2.4"/><circle cx="84" cy="82" r="2"/>
+                <circle cx="50" cy="112" r="3"/><circle cx="38" cy="104" r="2.2"/><circle cx="64" cy="102" r="2"/><circle cx="30" cy="118" r="2"/>
+                <circle cx="358" cy="74" r="3"/><circle cx="346" cy="68" r="2.2"/><circle cx="368" cy="84" r="2.4"/><circle cx="336" cy="82" r="2"/>
+                <circle cx="370" cy="112" r="3"/><circle cx="382" cy="104" r="2.2"/><circle cx="356" cy="102" r="2"/><circle cx="390" cy="118" r="2"/>
+                <circle cx="176" cy="28" r="2.8"/><circle cx="186" cy="38" r="2"/><circle cx="166" cy="36" r="2"/>
+                <circle cx="244" cy="28" r="2.8"/><circle cx="234" cy="38" r="2"/><circle cx="254" cy="36" r="2"/>
+                <circle cx="110" cy="92" r="2.2"/><circle cx="310" cy="92" r="2.2"/><circle cx="210" cy="44" r="2.2"/>
+            </g>
+            <use href="#rose" transform="translate(140 118) scale(0.95) rotate(20)"/>
+            <use href="#rose" transform="translate(280 118) scale(0.95) rotate(-35)"/>
+            <use href="#rose" transform="translate(210 106) scale(1.3)"/>
+        </symbol>
+    </defs>
+</svg>
+
+<!-- COVER -->
+<div id="cover">
+  <div class="door l"></div><div class="door r"></div>
+  <div class="cover-in">
+    <!-- Logo: arch monogram -->
+    <svg class="logo" viewBox="0 0 150 176" role="img" aria-label="U and H monogram">
+        <path d="M15 168V75a60 60 0 0 1 120 0v93Z" fill="none" stroke="#f4efe6" stroke-width="1.2"/>
+        <path d="M22 168V75a53 53 0 0 1 106 0v93" fill="none" stroke="#f4efe6" stroke-opacity="0.3" stroke-width="1"/>
+        <use href="#rose" transform="translate(75 15) scale(0.3)"/>
+        <text x="50" y="104" text-anchor="middle" font-family="'Marcellus', serif" font-size="52" fill="#f4efe6">U</text>
+        <text x="101" y="138" text-anchor="middle" font-family="'Marcellus', serif" font-size="52" fill="#f4efe6">H</text>
+        <path d="M100 62L48 142" stroke="#c2283a" stroke-width="1.2" stroke-linecap="round"/>
+    </svg>
+    <p class="label">The Nikkah of</p>
+    <h1 class="script cover-names">Uwaise <em>&amp;</em> Hajira</h1>
+    <p class="label">03 &middot; 01 &middot; 2027</p>
+    <button type="button" class="open-btn" id="openBtn">Open Invitation</button>
+    <svg class="bouquet" viewBox="0 0 420 150" aria-hidden="true"><use href="#bouquet"/></svg>
+  </div>
+</div>
+<div id="petals" aria-hidden="true"></div>
+
+<audio id="bgm" src="default.mp3" loop preload="none"></audio>
+<button type="button" id="music" aria-label="Toggle music" aria-pressed="false"><i></i><i></i><i></i></button>
+
+<main>
+    <!-- 1 · HERO -->
+    <section class="sec">
+        <div class="arch">
+            <svg class="arch-rose" viewBox="-50 -50 100 100" aria-hidden="true"><use href="#rose"/></svg>
+            <p class="bismillah">بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</p>
+            <p class="label bis-en">In the name of Allah,<br>the Most Gracious,<br>the Most Merciful</p>
+            <h1 class="script hero-title"><span>Nikkah</span><span>Ceremony</span></h1>
+            <svg class="rule" aria-hidden="true"><use href="#rule"/></svg>
+            <p class="hero-names">Mohamed Uwaise<i>&amp;</i>Hajira Nasrin</p>
+            <p class="label hero-date">Sunday &middot; 3 January 2027</p>
+            <span class="scroll-cue" aria-hidden="true"></span>
+        </div>
+    </section>
+
+    <!-- 2 · COUPLE -->
+    <section class="sec">
+        <div class="arch">
+            <svg class="arch-rose" viewBox="-50 -50 100 100" aria-hidden="true"><use href="#rose"/></svg>
+            <p class="label">Two families, one dua</p>
+            <p class="invite-line">request the honour of your presence<br>at the Nikkah of</p>
+            <svg class="rule" aria-hidden="true"><use href="#rule"/></svg>
+            <div class="person">
+                <h2>Mohamed Uwaise</h2>
+                <p class="label cred">MBA</p>
+                <p class="parents">S/o Syed Abuthahir Baqavi <span>&amp; Hithayath Nisha</span></p>
+                <p class="town">Kattumavadi</p>
+            </div>
+            <svg class="rule" aria-hidden="true"><use href="#rule"/></svg>
+            <div class="person">
+                <h2>Hajira Nasrin</h2>
+                <p class="label cred">DFA &middot; Aalima</p>
+                <p class="parents">D/o Mohamed Bahurudeen <span>&amp; Sabeeka</span></p>
+                <p class="town">Ammapattinam</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3 · DATE -->
+    <section class="sec">
+        <div class="arch">
+            <svg class="arch-rose" viewBox="-50 -50 100 100" aria-hidden="true"><use href="#rose"/></svg>
+            <p class="label">The day we have prayed for</p>
+            <p class="big-date">03<i>/</i>01<i>/</i>2027</p>
+            <p class="label weekday">Sunday</p>
+            <p class="hijri">23 Rajab 1448 AH</p>
+            <svg class="rule" aria-hidden="true"><use href="#rule"/></svg>
+            <div class="countdown" id="countdown" role="timer" aria-label="Time left until the Nikkah">
+                <div><b data-u="d">--</b><span class="label">Days</span></div>
+                <div><b data-u="h">--</b><span class="label">Hours</span></div>
+                <div><b data-u="m">--</b><span class="label">Mins</span></div>
+                <div><b data-u="s">--</b><span class="label">Secs</span></div>
+            </div>
+            <button type="button" class="text-btn" id="calBtn">Add to calendar</button>
+        </div>
+    </section>
+
+    <!-- 4 · VENUE & PROGRAMME -->
+    <section class="sec">
+        <div class="arch">
+            <svg class="arch-rose" viewBox="-50 -50 100 100" aria-hidden="true"><use href="#rose"/></svg>
+            <p class="script venue-word">Venue</p>
+            <h2 class="venue-name">Vasandham Wedding Hall</h2>
+            <p class="venue-town">Manamelkudi</p>
+            <svg class="rule" aria-hidden="true"><use href="#rule"/></svg>
+            <ul class="programme">
+                <li><span>Garland Ceremony</span><time>10.00 AM</time></li>
+                <li><span>Nikkah</span><time>12.00 PM</time></li>
+            </ul>
+            <p class="script valima">Followed by Valima</p>
+            <a class="text-btn" target="_blank" rel="noopener noreferrer"
+               href="https://www.google.com/maps/search/?api=1&amp;query=Vasandham%20Wedding%20Hall%20Manamelkudi">Get directions</a>
+        </div>
+    </section>
+
+    <!-- 5 · VERSE & CLOSE -->
+    <section class="sec sec-end">
+        <div class="arch">
+            <svg class="arch-rose" viewBox="-50 -50 100 100" aria-hidden="true"><use href="#rose"/></svg>
+            <p class="ayah">وَآتُوا النِّسَاءَ صَدُقَاتِهِنَّ نِحْلَةً ۚ فَإِن طِبْنَ لَكُمْ عَن شَيْءٍ مِّنْهُ نَفْسًا فَكُلُوهُ هَنِيئًا مَّرِيئًا</p>
+            <p class="ayah-en">And give the women [upon marriage] their [bridal] gifts graciously. But if they give up willingly to you anything of it, then take it in satisfaction and ease.</p>
+            <p class="label ayah-ref">Surah An-Nisa &middot; 4:4</p>
+            <svg class="rule" aria-hidden="true"><use href="#rule"/></svg>
+            <p class="closing">Your presence and your duas<br>are the gift we cherish most.</p>
+            <p class="script thanks">Jazakumullahu Khairan</p>
+        </div>
+        <svg class="bouquet" viewBox="0 0 420 150" aria-hidden="true"><use href="#bouquet"/></svg>
+    </section>
+</main>
+
+<script>
+(function () {
+    var root = document.documentElement;
+    var cover = document.getElementById('cover');
+    var bgm = document.getElementById('bgm');
+    var music = document.getElementById('music');
+
+    /* Music */
+    function setMusic(on) {
+        if (on) { var p = bgm.play(); if (p && p.catch) p.catch(function () { setMusic(false); }); }
+        else bgm.pause();
+        music.classList.toggle('on', on);
+        music.setAttribute('aria-pressed', on ? 'true' : 'false');
+    }
+    music.addEventListener('click', function () { setMusic(bgm.paused); });
+
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var secs = Array.prototype.slice.call(document.querySelectorAll('.sec'));
+    var deck = false, cur = 0, busy = false, started = false, io = null;
+
+    /* Open the cover: content fades, the two doors swing apart */
+    document.getElementById('openBtn').addEventListener('click', function () {
+        cover.classList.add('gone');
+        root.classList.remove('locked');
+        music.classList.add('show');
+        setMusic(true);
+        setTimeout(function () { started = true; arrive(); watchScroll(); }, 700);
+        setTimeout(function () { cover.setAttribute('hidden', ''); }, 2600);
+    });
+
+    /* ----- Page deck: one scroll / swipe lands on the next page ----- */
+    /* Cards shrink a little to fit short screens; if they would have to
+       shrink too much (e.g. landscape), fall back to normal scrolling. */
+    function fits() {
+        var vh = window.innerHeight, ok = true;
+        secs.forEach(function (s) {
+            var a = s.querySelector('.arch'), f = Math.min(1, (vh - 28) / a.offsetHeight);
+            a.style.setProperty('--fit', f.toFixed(3));
+            if (f < 0.72) ok = false;
+        });
+        return ok;
+    }
+    function layout() {
+        secs.forEach(function (s, i) {
+            s.classList.toggle('is-prev', deck && i < cur);
+            s.classList.toggle('is-next', deck && i > cur);
+        });
+    }
+    function setMode() {
+        var want = fits();
+        if (want === deck) return;
+        if (want) window.scrollTo(0, 0);
+        deck = want;
+        root.classList.toggle('deck', deck);
+        layout();
+        if (!deck) { secs[cur].scrollIntoView(); watchScroll(); }
+    }
+    function arrive() {
+        secs[cur].classList.add('in');
+        petals(cur);
+    }
+    function go(i) {
+        if (!deck || !started || busy || i < 0 || i >= secs.length || i === cur) return;
+        busy = true;
+        cur = i;
+        layout();
+        arrive();
+        setTimeout(function () { busy = false; }, 1000);
+    }
+
+    /* wheel / trackpad: one gesture = one page (inertia is swallowed) */
+    var quietUntil = 0;
+    window.addEventListener('wheel', function (e) {
+        if (!deck) return;
+        e.preventDefault();
+        var now = Date.now();
+        if (now < quietUntil) { quietUntil = Math.max(quietUntil, now + 140); return; }
+        if (Math.abs(e.deltaY) < 6) return;
+        quietUntil = now + 1000;
+        go(cur + (e.deltaY > 0 ? 1 : -1));
+    }, { passive: false });
+
+    /* touch swipe */
+    var ty = null;
+    window.addEventListener('touchstart', function (e) { ty = e.touches[0].clientY; }, { passive: true });
+    window.addEventListener('touchend', function (e) {
+        if (!deck || ty === null) return;
+        var dy = ty - e.changedTouches[0].clientY;
+        ty = null;
+        if (Math.abs(dy) > 40) go(cur + (dy > 0 ? 1 : -1));
+    }, { passive: true });
+
+    /* keyboard */
+    window.addEventListener('keydown', function (e) {
+        if (!deck) return;
+        if (e.key === 'ArrowDown' || e.key === 'PageDown' || (e.key === ' ' && e.target === document.body)) { e.preventDefault(); go(cur + 1); }
+        else if (e.key === 'ArrowUp' || e.key === 'PageUp') { e.preventDefault(); go(cur - 1); }
+    });
+
+    /* Fallback (card taller than the screen): normal scrolling, reveal on view */
+    function watchScroll() {
+        if (deck || !started || io) return;
+        if (!('IntersectionObserver' in window)) { secs.forEach(function (s) { s.classList.add('in'); }); return; }
+        io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) {
+                if (deck || !e.isIntersecting) return;
+                e.target.classList.add('in');
+                if (e.intersectionRatio >= 0.5) { cur = secs.indexOf(e.target); petals(cur); }
+            });
+        }, { threshold: [0.18, 0.5] });
+        secs.forEach(function (s) { io.observe(s); });
+    }
+
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    setMode();
+    window.addEventListener('resize', setMode);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(setMode);
+
+    /* ----- Petals: every page gets its own fresh set ----- */
+    var THEMES = [
+        { n: 14, dir: 'down', dur: [5, 8],   size: [9, 16], col: ['#c2283a,#6d0c17'] },
+        { n: 14, dir: 'wind', dur: [4.5, 7], size: [8, 14], col: ['#d63a4c,#7a0f1b', '#a3162a,#4a0810'] },
+        { n: 18, dir: 'down', dur: [6, 9],   size: [5, 10], col: ['#f4efe6,#cfc6b6', '#f0c4c9,#c2283a'], round: true },
+        { n: 14, dir: 'up',   dur: [5, 8],   size: [8, 15], col: ['#c2283a,#6d0c17', '#8f1422,#3a050b'] },
+        { n: 20, dir: 'down', dur: [4.5, 8], size: [6, 16], col: ['#c2283a,#6d0c17', '#f4efe6,#cfc6b6', '#f0c4c9,#b3202f'] }
+    ];
+    var petalBox = document.getElementById('petals'), petalPage = -1;
+    function rnd(a, b) { return a + Math.random() * (b - a); }
+    function petals(page) {
+        if (reduce || page === petalPage) return;
+        petalPage = page;
+        var old = petalBox.querySelectorAll('.layer');
+        for (var k = 0; k < old.length; k++) { (function (el) { el.classList.add('out'); setTimeout(function () { el.remove(); }, 950); })(old[k]); }
+
+        var t = THEMES[page % THEMES.length], layer = document.createElement('div');
+        layer.className = 'layer';
+        for (var n = 0; n < t.n; n++) {
+            var p = document.createElement('span'), i = document.createElement('i');
+            var size = rnd(t.size[0], t.size[1]), dur = rnd(t.dur[0], t.dur[1]);
+            p.className = 'petal' + (t.round ? ' round' : '');
+            p.style.width = p.style.height = size + 'px';
+            p.style.animationDuration = dur + 's';
+            /* half start mid-air so the new set is there straight away */
+            p.style.animationDelay = (n % 2 ? -rnd(0, dur) : rnd(0, 1.8)) + 's';
+            if (t.dir === 'up') {
+                p.style.left = rnd(0, 100) + '%';
+                p.style.bottom = '-30px';
+                p.style.setProperty('--dy', 'calc(-100vh - 60px)');
+            } else {
+                p.style.top = '-30px';
+                p.style.setProperty('--dy', 'calc(100vh + 60px)');
+                if (t.dir === 'wind') { p.style.left = rnd(-30, 70) + '%'; p.style.setProperty('--dx', '45vw'); }
+                else p.style.left = rnd(0, 100) + '%';
+            }
+            i.style.background = 'linear-gradient(135deg,' + t.col[n % t.col.length] + ')';
+            i.style.animationDuration = rnd(1.6, 3) + 's';
+            p.appendChild(i);
+            layer.appendChild(p);
+        }
+        petalBox.appendChild(layer);
+    }
+
+    /* Countdown to the Garland Ceremony, 10:00 AM IST on 3 January 2027 */
+    var target = Date.parse('2027-01-03T10:00:00+05:30');
+    var cd = document.getElementById('countdown');
+    function pad(n) { return n < 10 ? '0' + n : '' + n; }
+    function tick() {
+        var t = Math.max(0, Math.floor((target - Date.now()) / 1000));
+        cd.querySelector('[data-u="d"]').textContent = Math.floor(t / 86400);
+        cd.querySelector('[data-u="h"]').textContent = pad(Math.floor(t % 86400 / 3600));
+        cd.querySelector('[data-u="m"]').textContent = pad(Math.floor(t % 3600 / 60));
+        cd.querySelector('[data-u="s"]').textContent = pad(t % 60);
+    }
+    tick();
+    setInterval(tick, 1000);
+
+    /* Add to calendar (.ics download, made on the device) */
+    document.getElementById('calBtn').addEventListener('click', function () {
+        var ics = [
+            'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Nikkah Invitation//EN', 'BEGIN:VEVENT',
+            'UID:nikkah-uwaise-hajira-20270103', 'DTSTAMP:20270101T000000Z',
+            'DTSTART:20270103T043000Z', 'DTEND:20270103T083000Z',
+            'SUMMARY:Nikkah Ceremony - Uwaise & Hajira',
+            'LOCATION:Vasandham Wedding Hall\\, Manamelkudi',
+            'DESCRIPTION:Garland Ceremony 10.00 AM\\nNikkah 12.00 PM\\nFollowed by Valima',
+            'END:VEVENT', 'END:VCALENDAR'
+        ].join('\r\n');
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(new Blob([ics], { type: 'text/calendar' }));
+        a.download = 'nikkah-uwaise-hajira.ics';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+    });
+})();
+</script>
+</body>
+</html>
